@@ -1,4 +1,4 @@
-runtime plugin/mapping.vim
+" Tests for mapping.vim
 
 " Call `mapping#_new_mapinfo`.
 function! Mapinfo(...)
