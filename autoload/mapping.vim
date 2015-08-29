@@ -39,7 +39,8 @@ endfunction
 " Parse the arguments of `Map` and `Remap` commands
 " and return a dictionary that has information about
 " the key mapping.
-function! mapping#parse_args(args)
+function! mapping#parse_args(args) abort
+  call s:validate_args(a:args)
   let map_args = s:find_map_arguments(a:args)
   let lhs_idx  = 1 + len(map_args)
 
@@ -78,6 +79,31 @@ endfunction
 
 
 " Internal {{{1
+
+" Validate arguments {{{2
+
+function! s:to_dict(array, ...) " {{{
+  let value = get(a:, '1', 1)
+  let dict = {}
+  for key in a:array
+    let dict[key] = value
+  endfor
+  return dict
+endfunction " }}}
+
+function! s:validate_args(args) abort
+  if len(a:args) < 3
+    throw 'mapping: Not enough arguments for mapping'
+  endif
+
+  let modes = a:args[0]
+  let invalid_chars = filter(split(modes, '\zs'), '! has_key(s:valid_mode_chars, v:val)')
+  if 0 < len(invalid_chars)
+    throw 'mapping: Invalid mode chars: ' . modes
+  endif
+endfunction
+let s:valid_mode_chars = s:to_dict(['n', 'v', 'x', 's', 'o', 'i', 'c'])
+
 
 " Parsing map-arguments {{{2
 

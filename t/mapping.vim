@@ -68,6 +68,11 @@ describe '#parse_args()'
     mapclear
   end
 
+  it 'throws an exception if the arguments is invalid'
+    Expect expr { ParseArgs('a b') } to_throw '^mapping: Not enough arguments'
+    Expect expr { ParseArgs('ab J jj') } to_throw '^mapping: Invalid mode chars'
+  end
+
   it 'converts the arguments for key mappings'
     " Most basic pattern.
     let mapinfo = ParseArgs('n <C-g> abc')
