@@ -165,8 +165,8 @@ function! s:parse_ex_command_rhs(rhs)
 
   for flag in s:rhs_filters.order
     if flags =~# flag
-      let func_name = s:rhs_filters.func_map[flag]
-      let rhs       = s:rhs_filters.filters[func_name](rhs)
+      let filter = s:rhs_filters.filters[flag]
+      let rhs    = printf(filter, rhs)
     endif
   endfor
 
@@ -176,35 +176,14 @@ endfunction
 " The dictionary that stores some filters
 " for parsing `rhs` special sintaxes.
 let s:rhs_filters = {
-  \ 'filters': {},
   \ 'order': ['f', 'u', 'r', 's'],
-  \ 'func_map': {
-  \   'f': 'call_function',
-  \   'u': 'reset_command_line',
-  \   'r': 'end_with_return',
-  \   's': 'end_with_space'
+  \ 'filters': {
+  \   'f': 'call %s<CR>',
+  \   'u': '<C-u>%s',
+  \   'r': '%s<CR>',
+  \   's': '%s<Space>'
   \   }
   \ }
-
-" :f:
-function! s:rhs_filters.filters.call_function(rhs)
-  return 'call ' . a:rhs . '<CR>'
-endfunction
-
-" :u:
-function! s:rhs_filters.filters.reset_command_line(rhs)
-  return '<C-u>' . a:rhs
-endfunction
-
-" :r:
-function! s:rhs_filters.filters.end_with_return(rhs)
-  return a:rhs . '<CR>'
-endfunction
-
-" :s:
-function! s:rhs_filters.filters.end_with_space(rhs)
-  return a:rhs . '<Space>'
-endfunction
 
 
 " Restore 'cpoptions' {{{1
