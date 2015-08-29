@@ -68,6 +68,14 @@ function! mapping#_new_mapinfo(mode_chars, map_args, lhs, rhs)
     \ }
 endfunction
 
+" Tools {{{2
+
+function! mapping#_scope()
+  return s:
+endfunction
+
+" }}}
+
 
 " Internal {{{1
 
