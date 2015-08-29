@@ -11,7 +11,7 @@ set cpo&vim
 
 " Return the current version.
 function! mapping#version()
-  return '-'
+  return '1.0.0'
 endfunction
 
 " Set a script id to be used by the mapping commands.

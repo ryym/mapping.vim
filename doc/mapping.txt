@@ -1,6 +1,6 @@
 *mapping.vim*		Simplify commands for key mapping
 
-Version:
+Version: 1.0.0
 Author: ryym <ryym64@gmail.com>
 License: This file is placed in the public domain.
 
@@ -89,6 +89,9 @@ mapping#set_sid({sid})					*mapping#set_sid()*
 
 ==============================================================================
 CHAGNELOG						*mapping-changelog*
+
+1.0.0	2015-08-29
+	Initial version.
 
 
 ==============================================================================
