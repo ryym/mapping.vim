@@ -41,4 +41,4 @@ Remap i (buffer expr) <C-s> unite#do_action('split')
 ## Features
 * Some repetitive patterns of `rhs` can be omitted.
 * The mappings for several modes can be defined in any combination of modes.
-* The `map-arguments` become distinguishable from `lhs`.
+* The `map-arguments`(`<buffer>`, `<silent>`, ..) become distinguishable from `lhs`.
