@@ -1,0 +1,98 @@
+*mapping.vim*		Simplify commands for key mapping
+
+Version: 1.0.0
+Author: ryym <ryym64@gmail.com>
+License: This file is placed in the public domain.
+
+
+==============================================================================
+CONTENTS						*mapping-contents*
+
+Introduction				|mapping-introduction|
+Interface				|mapping-interface|
+  Commands				|mapping-commands|
+  Functions				|mapping-functions|
+Changelog				|mapping-changelog|
+
+
+==============================================================================
+INTRODUCTION						*mapping-introduction*
+
+*mapping.vim* is a Vim plugin to define key mappings more readably.
+
+Example: >
+
+	Map n <Space>w  ::write
+	Map n <Space>q  ::quit
+	Map nv c  "_c
+	Remap i (buffer silent) <C-l>  :f:update_something()
+
+
+==============================================================================
+INTERFACE						*mapping-interface*
+
+------------------------------------------------------------------------------
+COMMANDS						*mapping-commands*
+
+:Map   {modes} [{map-arguments}] {lhs} {rhs}		*:Map*
+:Remap {modes} [{map-arguments}] {lhs} {rhs}		*:Remap*
+
+	The wrapper commands of default mapping commands like |:nmap|,
+	|:vnoremap|, and so on.
+	Note: |:Map| is a wrapper of |:noremap|. And |:Remap| is a wrapper
+	of |:map|. Maybe this is confusing, but these name describe
+	what they do more simply.
+
+	{modes} is a sequence of characters. Each character indicates
+	Vim mode in which {lhs} works. The valid characters of {modes}
+	are the first chahacters of default mapping commands ('n'map,
+	'v'map, ..). 'n', 'v', 'x', 's', 'o', 'i', 'c' can be used
+	and any combination of them is allowed.
+
+	{map-arguments} is |map-arguments| of the mapping command like
+	|<buffer>|, |<silent>|, and so on. But in this custom commands,
+	the |map-arguments| must be surrounded by parentheses like
+	'(buffer silent)'. If the argument is multiple all arguments
+	must be in one parentheses and separated by space.
+
+	{lhs} is same as default commands.
+
+	{rhs} is almost same as default commands. But in the
+	case of ex command, some special syntaxes can be used.
+
+		Syntax     | Converted rhs
+		-----------|-------------------
+		::echo     | :<C-u>echo<CR>
+		:u:echo    | :<C-u>echo
+		:r:echo    | :echo<CR>
+		:s:echo    | :echo<Space>
+		:f:Func(0) | :call Func(0)<CR>
+
+	And these flags can be used with others like ':us:'.
+
+	Note: To call a script local function in {rhs},
+	you must set |<SID>| beforehand by |mapping#set_sid()|.
+	This is because actual key mappings is executed in the
+	plugin script. So the plugin command needs to know the
+	script in which the local function is actually defined.
+
+
+------------------------------------------------------------------------------
+FUNCTIONS						*mapping-functions*
+
+mapping#set_sid({sid})					*mapping#set_sid()*
+
+	Set script id. This is required for converting |<SID>|
+	in {rhs} of |:Map| or |:Remap|. How to get the script id
+	is described in the help of |<SID>|.
+
+
+==============================================================================
+CHAGNELOG						*mapping-changelog*
+
+1.0.0	2015-08-29
+	Initial version.
+
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:fen:fdl=0:fdm=marker:
