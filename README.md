@@ -1,5 +1,7 @@
 # mapping.vim
 
+[![Build Status](https://travis-ci.org/ryym/mapping.vim.svg?branch=ci)](https://travis-ci.org/ryym/mapping.vim)
+
 Using this plugin, the codes of key mappings in Vim script become
 a little more simple and readable.
 
