@@ -7,12 +7,15 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
-" Map, Remap {{{1
+" Version {{{1
 
 " Return the current version.
 function! mapping#version()
   return '1.0.0'
 endfunction
+
+
+" Map, Remap {{{1
 
 " Set a script id to be used by the mapping commands.
 function! mapping#set_sid(sid)
