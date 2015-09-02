@@ -76,6 +76,11 @@ COMMANDS						*mapping-commands*
 	plugin script. So the plugin command needs to know the
 	script in which the local function is actually defined.
 
+Unmap {modes} {lhs}					*:Unmap*
+
+	The wrapper command of default unmapping commands like |:nunmap|.
+	|:vunmap|, etc. The definitions of {modes} and {lhs} are same as
+	|:Map| and |:Remap|.
 
 ------------------------------------------------------------------------------
 FUNCTIONS						*mapping-functions*
