@@ -95,15 +95,17 @@ function! s:validate_args(args) abort
   if len(a:args) < 3
     throw 'mapping: Not enough arguments for mapping'
   endif
+  call s:validate_mode_chars(a:args[0])
+endfunction
 
-  let modes = a:args[0]
-  let invalid_chars = filter(split(modes, '\zs'), '! has_key(s:valid_mode_chars, v:val)')
+function! s:validate_mode_chars(modes) abort
+  let invalid_chars = filter(split(a:modes, '\zs'), '! has_key(s:valid_mode_chars, v:val)')
   if 0 < len(invalid_chars)
-    throw 'mapping: Invalid mode chars: ' . modes
+    throw 'mapping: Invalid mode chars: ' . a:modes
   endif
 endfunction
-let s:valid_mode_chars = s:to_dict(['n', 'v', 'x', 's', 'o', 'i', 'c'])
 
+let s:valid_mode_chars = s:to_dict(['n', 'v', 'x', 's', 'o', 'i', 'c'])
 
 " Parsing map-arguments {{{2
 
