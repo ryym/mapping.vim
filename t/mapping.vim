@@ -166,3 +166,23 @@ describe '#parse_args()'
     end
   end
 end
+
+
+describe '#unmap()'
+  it 'removes the mapping of the specified lhs for the modes'
+    noremap test j
+    Expect maparg('test', 'n', 0, 1).rhs ==# 'j'
+    Expect maparg('test', 'v', 0, 1).rhs ==# 'j'
+    Expect maparg('test', 'o', 0, 1).rhs ==# 'j'
+
+    call mapping#unmap('nvo', 'test')
+    Expect maparg('test', 'n', 0, 1) ==# {}
+    Expect maparg('test', 'v', 0, 1) ==# {}
+    Expect maparg('test', 'o', 0, 1) ==# {}
+  end
+
+  it 'throws an exception if invalid mode chars are specified'
+    Expect expr { mapping#unmap('z', 'a') }  to_throw '^mapping:'
+    Expect expr { mapping#unmap('nz', 'a') } to_throw '^mapping:'
+  end
+end

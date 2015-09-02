@@ -20,6 +20,7 @@ set cpo&vim
 " Define the custom mapping commands.
 command! -nargs=+ Map   call mapping#define( 0, mapping#parse_args([<f-args>]) )
 command! -nargs=+ Remap call mapping#define( 1, mapping#parse_args([<f-args>]) )
+command! -nargs=+ Unmap call mapping#unmap(<f-args>)
 
 
 " Restore 'cpoptions'.

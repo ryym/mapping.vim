@@ -7,12 +7,15 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
-" Global functions {{{1
+" Version {{{1
 
 " Return the current version.
 function! mapping#version()
   return '1.0.0'
 endfunction
+
+
+" Map, Remap {{{1
 
 " Set a script id to be used by the mapping commands.
 function! mapping#set_sid(sid)
@@ -69,13 +72,23 @@ function! mapping#_new_mapinfo(mode_chars, map_args, lhs, rhs)
     \ }
 endfunction
 
-" Tools {{{2
+
+" Unmap {{{1
+
+" Remove the mapping of the specified `lhs` for the modes.
+function! mapping#unmap(mode_chars, lhs) abort
+  call s:validate_mode_chars(a:mode_chars)
+  for mode in split(a:mode_chars, '\zs')
+    execute mode . 'unmap' a:lhs
+  endfor
+endfunction
+
+
+" Tools {{{1
 
 function! mapping#_scope()
   return s:
 endfunction
-
-" }}}
 
 
 " Internal {{{1
@@ -95,15 +108,17 @@ function! s:validate_args(args) abort
   if len(a:args) < 3
     throw 'mapping: Not enough arguments for mapping'
   endif
+  call s:validate_mode_chars(a:args[0])
+endfunction
 
-  let modes = a:args[0]
-  let invalid_chars = filter(split(modes, '\zs'), '! has_key(s:valid_mode_chars, v:val)')
+function! s:validate_mode_chars(modes) abort
+  let invalid_chars = filter(split(a:modes, '\zs'), '! has_key(s:valid_mode_chars, v:val)')
   if 0 < len(invalid_chars)
-    throw 'mapping: Invalid mode chars: ' . modes
+    throw 'mapping: Invalid mode chars: ' . a:modes
   endif
 endfunction
-let s:valid_mode_chars = s:to_dict(['n', 'v', 'x', 's', 'o', 'i', 'c'])
 
+let s:valid_mode_chars = s:to_dict(['n', 'v', 'x', 's', 'o', 'i', 'c'])
 
 " Parsing map-arguments {{{2
 
