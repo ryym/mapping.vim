@@ -7,7 +7,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
-" Global functions {{{1
+" Map, Remap {{{1
 
 " Return the current version.
 function! mapping#version()
@@ -69,13 +69,23 @@ function! mapping#_new_mapinfo(mode_chars, map_args, lhs, rhs)
     \ }
 endfunction
 
-" Tools {{{2
+
+" Unmap {{{1
+
+" Remove the mapping of the specified `lhs` for the modes.
+function! mapping#unmap(mode_chars, lhs) abort
+  call s:validate_mode_chars(a:mode_chars)
+  for mode in split(a:mode_chars, '\zs')
+    execute mode . 'unmap' a:lhs
+  endfor
+endfunction
+
+
+" Tools {{{1
 
 function! mapping#_scope()
   return s:
 endfunction
-
-" }}}
 
 
 " Internal {{{1
