@@ -15,6 +15,11 @@ endfunction
 let s:__args = []
 command -nargs=+ Parse let s:__args = [<f-args>]
 
+" Return the maparg dictionary.
+function Maparg(name, mode)
+  return maparg(a:name, a:mode, 0, 1)
+endfunction
+
 call vspec#hint({ 'scope' : 'mapping#_scope()' })
 
 
@@ -27,7 +32,7 @@ describe '#define()'
     let mapinfo = Mapinfo(['n'], [], '\a', 'abc')
     call mapping#define(0, mapinfo)
 
-    let maparg = maparg('\a', 'n', 0, 1)
+    let maparg = Maparg('\a', 'n')
     Expect maparg.rhs     ==# 'abc'
     Expect maparg.noremap to_be_true
   end
@@ -36,7 +41,7 @@ describe '#define()'
     let mapinfo = Mapinfo(['n'], [], 'key', '<C-g>')
     call mapping#define(1, mapinfo)
 
-    let maparg = maparg('key', 'n', 0, 1)
+    let maparg = Maparg('key', 'n')
     Expect maparg.rhs     ==# '<C-g>'
     Expect maparg.noremap to_be_false
   end
@@ -45,7 +50,7 @@ describe '#define()'
     let mapinfo = Mapinfo(['n'], ['<buffer>', '<silent>'], '\c', '[abc]<CR>')
     call mapping#define(0, mapinfo)
 
-    let maparg = maparg('\c', 'n', 0, 1)
+    let maparg = Maparg('\c', 'n')
     Expect maparg.rhs    ==# '[abc]<CR>'
     Expect maparg.buffer to_be_true
     Expect maparg.silent to_be_true
@@ -56,7 +61,7 @@ describe '#define()'
     call mapping#define(0, mapinfo)
 
     for mode in ['n', 'o', 'i']
-      let maparg = maparg('\a', mode, 0, 1)
+      let maparg = Maparg('\a', mode)
       Expect maparg.rhs     ==# 'abc'
       Expect maparg.noremap to_be_true
     endfor
@@ -172,14 +177,14 @@ end
 describe '#unmap()'
   it 'removes the mapping of the specified lhs for the modes'
     noremap test j
-    Expect maparg('test', 'n', 0, 1).rhs ==# 'j'
-    Expect maparg('test', 'v', 0, 1).rhs ==# 'j'
-    Expect maparg('test', 'o', 0, 1).rhs ==# 'j'
+    Expect Maparg('test', 'n').rhs ==# 'j'
+    Expect Maparg('test', 'v').rhs ==# 'j'
+    Expect Maparg('test', 'o').rhs ==# 'j'
 
     call mapping#unmap('nvo', 'test')
-    Expect maparg('test', 'n', 0, 1) ==# {}
-    Expect maparg('test', 'v', 0, 1) ==# {}
-    Expect maparg('test', 'o', 0, 1) ==# {}
+    Expect Maparg('test', 'n') ==# {}
+    Expect Maparg('test', 'v') ==# {}
+    Expect Maparg('test', 'o') ==# {}
   end
 
   it 'throws an exception if invalid mode chars are specified'
