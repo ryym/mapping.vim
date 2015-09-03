@@ -1,4 +1,5 @@
 " Tests for mapping.vim
+" vim: foldmethod=expr
 
 " Call `mapping#_new_mapinfo`.
 function! Mapinfo(...)
