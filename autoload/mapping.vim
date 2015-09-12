@@ -83,6 +83,18 @@ function! mapping#unmap(mode_chars, lhs) abort
   endfor
 endfunction
 
+" Map named key {{{1
+
+" Define a named key.
+function! mapping#map_named_key(key, name) abort
+  let format = get(g:, 'mapping_named_key_format', '%s')
+  if format == '' | let format = '%s' | endif
+
+  let prefix = printf(format, a:name)
+  execute 'noremap' prefix '<Nop>'
+  execute 'map'     a:key  prefix
+endfunction
+
 
 " Tools {{{1
 
