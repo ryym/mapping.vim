@@ -192,3 +192,32 @@ describe '#unmap()'
     Expect expr { mapping#unmap('nz', 'a') } to_throw '^mapping:'
   end
 end
+
+
+describe '#map_named_key()'
+  before
+    mapclear
+    unlet! g:mapping_named_key_format
+  end
+
+  it 'defines a prefix name used for other key mappings'
+    call mapping#map_named_key('ab', 'test-command')
+    Expect Maparg('ab', 'n').rhs ==# 'test-command'
+    Expect Maparg('ab', 'v').rhs ==# 'test-command'
+    Expect Maparg('ab', 'o').rhs ==# 'test-command'
+  end
+
+  it 'formats named keys as the config specified'
+    let g:mapping_named_key_format = '[%s]'
+    call mapping#map_named_key('key', 'test')
+    Expect Maparg('key', 'n').rhs ==# '[test]'
+
+    let g:mapping_named_key_format = ''
+    call mapping#map_named_key('key', 'test')
+    Expect Maparg('key', 'n').rhs ==# 'test'
+
+    unlet g:mapping_named_key_format
+    call mapping#map_named_key('key', 'test')
+    Expect Maparg('key', 'n').rhs ==# 'test'
+  end
+end
