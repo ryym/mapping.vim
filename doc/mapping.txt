@@ -40,7 +40,7 @@ COMMANDS						*mapping-commands*
 	The wrapper commands of default mapping commands like |:nmap|,
 	|:vnoremap|, and so on.
 	Note: |:Map| is a wrapper of |:noremap|. And |:Remap| is a wrapper
-	of |:map|. Maybe this is confusing, but these name describe
+	of |:map|. Maybe this is confusing, but these names describe
 	what they do more simply.
 
 	{modes} is a sequence of characters. Each character indicates
@@ -72,7 +72,7 @@ COMMANDS						*mapping-commands*
 
 	Note: To call a script local function in {rhs},
 	you must set |<SID>| beforehand by |mapping#set_sid()|.
-	This is because actual key mappings is executed in the
+	This is because actual key mappings are executed in the
 	plugin script. So the plugin command needs to know the
 	script in which the local function is actually defined.
 
