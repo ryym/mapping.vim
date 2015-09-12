@@ -1,13 +1,13 @@
 " Syntax file for mapping.vim
 
 
-highlight link MyVimMap         vimMap
-highlight link MyVimMapModeChar vimSpecial
-highlight link MyVimMapNamedKey vimMap
+highlight link MpgVimMap         vimMap
+highlight link MpgVimMapModeChar vimSpecial
+highlight link MpgVimMapNamedKey vimMap
 
-syntax match MyVimMap         '\v^\s*<%(Rem|M)ap>'  skipwhite nextgroup=MyVimMapModeChar
-syntax match MyVimMapNamedKey '\v^\s*<MapNamedKey>' skipwhite nextgroup=MyVimMapModeChar,vimMapMod,vimMapLhs
-syntax match MyVimMapModeChar '\v[nvxsoic]+' contained skipwhite nextgroup=MyVimMapType,vimMapMod,vimMapLhs
-syntax match MyVimMapType     '\v\([^)]+\)'  contained skipwhite nextgroup=vimMapMod,vimMapLhs
+syntax match MpgVimMap         '\v^\s*<%(Rem|M)ap>'  skipwhite nextgroup=MpgVimMapModeChar
+syntax match MpgVimMapNamedKey '\v^\s*<MapNamedKey>' skipwhite nextgroup=MpgVimMapModeChar,vimMapMod,vimMapLhs
+syntax match MpgVimMapModeChar '\v[nvxsoic]+' contained skipwhite nextgroup=MpgVimMapType,vimMapMod,vimMapLhs
+syntax match MpgVimMapType     '\v\([^)]+\)'  contained skipwhite nextgroup=vimMapMod,vimMapLhs
 
-syntax cluster vimFuncBodyList add=MyVimMap,MyVimMapNamedKey
+syntax cluster vimFuncBodyList add=MpgVimMap,MpgVimMapNamedKey
