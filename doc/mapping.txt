@@ -72,9 +72,6 @@ COMMANDS						*mapping-commands*
 
 	Note: To call a script local function in {rhs},
 	you must set |<SID>| beforehand by |mapping#set_sid()|.
-	This is because actual key mappings are executed in the
-	plugin script. So the plugin command needs to know the
-	script in which the local function is actually defined.
 
 Unmap {modes} {lhs}					*:Unmap*
 
@@ -88,8 +85,11 @@ FUNCTIONS						*mapping-functions*
 mapping#set_sid({sid})					*mapping#set_sid()*
 
 	Set script id. This is required for converting |<SID>|
-	in {rhs} of |:Map| or |:Remap|. How to get the script id
-	is described in the help of |<SID>|.
+	in {rhs} of |:Map| or |:Remap| because actual key mappings are
+	executed in the plugin script. So the plugin command needs
+	to know the script in which the local function is actually
+	defined.
+	How to get the script id is described in the help of |<SID>|.
 
 
 ==============================================================================
