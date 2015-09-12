@@ -1,6 +1,6 @@
 *mapping.vim*		Simplify commands for key mapping
 
-Version: 1.0.0
+Version: 1.1.0
 Author: ryym <ryym64@gmail.com>
 License: This file is placed in the public domain.
 
@@ -40,7 +40,7 @@ COMMANDS						*mapping-commands*
 	The wrapper commands of default mapping commands like |:nmap|,
 	|:vnoremap|, and so on.
 	Note: |:Map| is a wrapper of |:noremap|. And |:Remap| is a wrapper
-	of |:map|. Maybe this is confusing, but these name describe
+	of |:map|. Maybe this is confusing, but these names describe
 	what they do more simply.
 
 	{modes} is a sequence of characters. Each character indicates
@@ -72,9 +72,6 @@ COMMANDS						*mapping-commands*
 
 	Note: To call a script local function in {rhs},
 	you must set |<SID>| beforehand by |mapping#set_sid()|.
-	This is because actual key mappings is executed in the
-	plugin script. So the plugin command needs to know the
-	script in which the local function is actually defined.
 
 Unmap {modes} {lhs}					*:Unmap*
 
@@ -88,12 +85,18 @@ FUNCTIONS						*mapping-functions*
 mapping#set_sid({sid})					*mapping#set_sid()*
 
 	Set script id. This is required for converting |<SID>|
-	in {rhs} of |:Map| or |:Remap|. How to get the script id
-	is described in the help of |<SID>|.
+	in {rhs} of |:Map| or |:Remap| because actual key mappings are
+	executed in the plugin script. So the plugin command needs
+	to know the script in which the local function is actually
+	defined.
+	How to get the script id is described in the help of |<SID>|.
 
 
 ==============================================================================
 CHAGNELOG						*mapping-changelog*
+
+1.1.0	2015-09-02
+	Add 'Unmap' command.
 
 1.0.0	2015-08-29
 	Initial version.
