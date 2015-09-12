@@ -28,7 +28,7 @@ describe '#define()'
     mapclear
   end
 
-  it 'defines a key mapping without remapping'
+  it 'can define a key mapping without remapping'
     let mapinfo = Mapinfo(['n'], [], '\a', 'abc')
     call mapping#define(0, mapinfo)
 
@@ -37,7 +37,7 @@ describe '#define()'
     Expect maparg.noremap to_be_true
   end
 
-  it 'defines a key mapping with remapping'
+  it 'can define a key mapping with remapping'
     let mapinfo = Mapinfo(['n'], [], 'key', '<C-g>')
     call mapping#define(1, mapinfo)
 
@@ -46,7 +46,7 @@ describe '#define()'
     Expect maparg.noremap to_be_false
   end
 
-  it 'defines a key mapping with map-arguments'
+  it 'can define a key mapping with map-arguments'
     let mapinfo = Mapinfo(['n'], ['<buffer>', '<silent>'], '\c', '[abc]<CR>')
     call mapping#define(0, mapinfo)
 
@@ -56,7 +56,7 @@ describe '#define()'
     Expect maparg.silent to_be_true
   end
 
-  it 'defines key mappings in several modes'
+  it 'can define key mappings in several modes'
     let mapinfo = Mapinfo(['n', 'o', 'i'], [], '\a', 'abc')
     call mapping#define(0, mapinfo)
 
