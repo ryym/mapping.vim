@@ -93,7 +93,7 @@ Unmap {modes} {lhs}					*:Unmap*
 	|:vunmap|, etc. The definitions of {modes} and {lhs} are same as
 	|:Map| and |:Remap|.
 
-MapNamedKey {key} {name}				*:MapNamedKey*
+MapNamedKey [{modes}] {key} {name}			*:MapNamedKey*
 
 	Define a named key by mapping {key} to the key sequence of {name}.
 	Named key is typically used as a prefix of other mappings.
@@ -107,6 +107,8 @@ MapNamedKey {key} {name}				*:MapNamedKey*
 		Map n [buffer]d ::bclose
 		Map n [buffer]w ::bwipeout
 <
+	The definition of {modes} is same as |:Map| and |:Remap|. If omitted,
+	named key is defined only in normal mode.
 	You can define the format of named key by the |g:mapping_named_key_format|
 	variable.
 

@@ -207,6 +207,17 @@ describe '#map_named_key()'
     Expect Maparg('ab', 'o').rhs ==# 'test-command'
   end
 
+  it 'accepts mode chars as optional'
+    call mapping#map_named_key('n', 'ab', 'test-command')
+    Expect Maparg('ab', 'n').rhs ==# 'test-command'
+    Expect Maparg('ab', 'v') ==# {}
+    Expect Maparg('ab', 'o') ==# {}
+
+    call mapping#map_named_key('no', 'ab')
+    Expect Maparg('no', 'n').rhs ==# 'ab'
+    Expect Maparg('no', 'o') ==# {}
+  end
+
   it 'formats named keys as the config specified'
     let g:mapping_named_key_format = '[%s]'
     call mapping#map_named_key('key', 'test')

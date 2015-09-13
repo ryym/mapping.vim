@@ -86,13 +86,29 @@ endfunction
 " Map named key {{{1
 
 " Define a named key.
-function! mapping#map_named_key(key, name) abort
+" The first argument (mode chars) can be omitted.
+function! mapping#map_named_key(...) abort
+  if a:0 == 2
+    let modes = 'nvo'
+    let key   = a:1
+    let name  = a:2
+  elseif a:0 == 3
+    let modes = a:1
+    let key   = a:2
+    let name  = a:3
+    call s:validate_mode_chars(modes)
+  else
+    throw 'mapping: Invalid argument number'
+  endif
+
   let format = get(g:, 'mapping_named_key_format', '%s')
   if format == '' | let format = '%s' | endif
 
-  let prefix = printf(format, a:name)
-  execute 'noremap' prefix '<Nop>'
-  execute 'map'     a:key  prefix
+  let prefix = printf(format, name)
+  for mode in split(modes, '\zs')
+    execute mode . 'noremap' prefix '<Nop>'
+    execute mode . 'map'     key     prefix
+  endfor
 endfunction
 
 
