@@ -203,15 +203,15 @@ describe '#map_named_key()'
   it 'defines a prefix name used for other key mappings'
     call mapping#map_named_key('ab', 'test-command')
     Expect Maparg('ab', 'n').rhs ==# 'test-command'
-    Expect Maparg('ab', 'v').rhs ==# 'test-command'
-    Expect Maparg('ab', 'o').rhs ==# 'test-command'
+    Expect Maparg('ab', 'v') ==# {}
+    Expect Maparg('ab', 'o') ==# {}
   end
 
   it 'accepts mode chars as optional'
-    call mapping#map_named_key('n', 'ab', 'test-command')
+    call mapping#map_named_key('no', 'ab', 'test-command')
     Expect Maparg('ab', 'n').rhs ==# 'test-command'
     Expect Maparg('ab', 'v') ==# {}
-    Expect Maparg('ab', 'o') ==# {}
+    Expect Maparg('ab', 'o').rhs ==# 'test-command'
 
     call mapping#map_named_key('no', 'ab')
     Expect Maparg('no', 'n').rhs ==# 'ab'

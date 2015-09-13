@@ -89,7 +89,7 @@ endfunction
 " The first argument (mode chars) can be omitted.
 function! mapping#map_named_key(...) abort
   if a:0 == 2
-    let modes = 'nvo'
+    let modes = 'n'
     let key   = a:1
     let name  = a:2
   elseif a:0 == 3
