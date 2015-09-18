@@ -10,6 +10,7 @@ CONTENTS						*mapping-contents*
 
 Introduction				|mapping-introduction|
 Interface				|mapping-interface|
+  Variables				|mapping-variables|
   Commands				|mapping-commands|
   Functions				|mapping-functions|
 Changelog				|mapping-changelog|
@@ -30,6 +31,19 @@ Example: >
 
 ==============================================================================
 INTERFACE						*mapping-interface*
+
+------------------------------------------------------------------------------
+VARIABLES						*mapping-variables*
+
+g:mapping_named_key_format				*g:mapping_named_key_format*
+default: '[%s]'
+
+	Specify the format of named key defined by |MapNamedKey| command.
+	The format of named key is a '|printf()|'ed string using this
+	variable's value like below. >
+
+		printf(g:mapping_named_key_format, name)
+
 
 ------------------------------------------------------------------------------
 COMMANDS						*mapping-commands*
@@ -79,6 +93,26 @@ Unmap {modes} {lhs}					*:Unmap*
 	|:vunmap|, etc. The definitions of {modes} and {lhs} are same as
 	|:Map| and |:Remap|.
 
+MapNamedKey [{modes}] {key} {name}			*:MapNamedKey*
+
+	Define a named key by mapping {key} to the key sequence of {name}.
+	Named key is typically used as a prefix of other mappings.
+	Using named key as a prefix makes vimrc more maintainable.
+
+	For example, the following mappings allow you to execute |:enew|
+	by '<Space>bn', |:bclose| by '<Space>bd', and |:bwipeout| by '<Space>bw'.
+>
+		MapNamedKey <Space>b buffer
+		Map n [buffer]n ::enew
+		Map n [buffer]d ::bclose
+		Map n [buffer]w ::bwipeout
+<
+	The definition of {modes} is same as |:Map| and |:Remap|. If omitted,
+	named key is defined only in normal mode.
+	You can define the format of named key by the |g:mapping_named_key_format|
+	variable.
+
+>
 ------------------------------------------------------------------------------
 FUNCTIONS						*mapping-functions*
 
