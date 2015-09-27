@@ -19,7 +19,7 @@ Changelog				|mapping-changelog|
 ==============================================================================
 INTRODUCTION						*mapping-introduction*
 
-*mapping.vim* is a Vim plugin to define key mappings more readably.
+mapping.vim is a Vim plugin to define key mappings more readably.
 
 Example: >
 
