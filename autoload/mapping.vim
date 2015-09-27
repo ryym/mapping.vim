@@ -7,12 +7,15 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
-" Global functions {{{1
+" Version {{{1
 
 " Return the current version.
 function! mapping#version()
-  return '1.0.0'
+  return '1.2.1'
 endfunction
+
+
+" Map, Remap {{{1
 
 " Set a script id to be used by the mapping commands.
 function! mapping#set_sid(sid)
@@ -69,13 +72,51 @@ function! mapping#_new_mapinfo(mode_chars, map_args, lhs, rhs)
     \ }
 endfunction
 
-" Tools {{{2
+
+" Unmap {{{1
+
+" Remove the mapping of the specified `lhs` for the modes.
+function! mapping#unmap(mode_chars, lhs) abort
+  call s:validate_mode_chars(a:mode_chars)
+  for mode in split(a:mode_chars, '\zs')
+    execute mode . 'unmap' a:lhs
+  endfor
+endfunction
+
+" Map named key {{{1
+
+" Define a named key.
+" The first argument (mode chars) can be omitted.
+function! mapping#map_named_key(...) abort
+  if a:0 == 2
+    let modes = 'n'
+    let key   = a:1
+    let name  = a:2
+  elseif a:0 == 3
+    let modes = a:1
+    let key   = a:2
+    let name  = a:3
+    call s:validate_mode_chars(modes)
+  else
+    throw 'mapping: Invalid argument number'
+  endif
+
+  let format = get(g:, 'mapping_named_key_format', '%s')
+  if format == '' | let format = '%s' | endif
+
+  let prefix = printf(format, name)
+  for mode in split(modes, '\zs')
+    execute mode . 'noremap' prefix '<Nop>'
+    execute mode . 'map'     key     prefix
+  endfor
+endfunction
+
+
+" Tools {{{1
 
 function! mapping#_scope()
   return s:
 endfunction
-
-" }}}
 
 
 " Internal {{{1
@@ -95,15 +136,17 @@ function! s:validate_args(args) abort
   if len(a:args) < 3
     throw 'mapping: Not enough arguments for mapping'
   endif
+  call s:validate_mode_chars(a:args[0])
+endfunction
 
-  let modes = a:args[0]
-  let invalid_chars = filter(split(modes, '\zs'), '! has_key(s:valid_mode_chars, v:val)')
+function! s:validate_mode_chars(modes) abort
+  let invalid_chars = filter(split(a:modes, '\zs'), '! has_key(s:valid_mode_chars, v:val)')
   if 0 < len(invalid_chars)
-    throw 'mapping: Invalid mode chars: ' . modes
+    throw 'mapping: Invalid mode chars: ' . a:modes
   endif
 endfunction
-let s:valid_mode_chars = s:to_dict(['n', 'v', 'x', 's', 'o', 'i', 'c'])
 
+let s:valid_mode_chars = s:to_dict(['n', 'v', 'x', 's', 'o', 'i', 'c'])
 
 " Parsing map-arguments {{{2
 

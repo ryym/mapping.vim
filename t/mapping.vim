@@ -1,4 +1,5 @@
 " Tests for mapping.vim
+" vim: foldmethod=expr
 
 " Call `mapping#_new_mapinfo`.
 function! Mapinfo(...)
@@ -14,6 +15,11 @@ endfunction
 let s:__args = []
 command -nargs=+ Parse let s:__args = [<f-args>]
 
+" Return the maparg dictionary.
+function Maparg(name, mode)
+  return maparg(a:name, a:mode, 0, 1)
+endfunction
+
 call vspec#hint({ 'scope' : 'mapping#_scope()' })
 
 
@@ -22,40 +28,40 @@ describe '#define()'
     mapclear
   end
 
-  it 'defines a key mapping without remapping'
+  it 'can define a key mapping without remapping'
     let mapinfo = Mapinfo(['n'], [], '\a', 'abc')
     call mapping#define(0, mapinfo)
 
-    let maparg = maparg('\a', 'n', 0, 1)
+    let maparg = Maparg('\a', 'n')
     Expect maparg.rhs     ==# 'abc'
     Expect maparg.noremap to_be_true
   end
 
-  it 'defines a key mapping with remapping'
+  it 'can define a key mapping with remapping'
     let mapinfo = Mapinfo(['n'], [], 'key', '<C-g>')
     call mapping#define(1, mapinfo)
 
-    let maparg = maparg('key', 'n', 0, 1)
+    let maparg = Maparg('key', 'n')
     Expect maparg.rhs     ==# '<C-g>'
     Expect maparg.noremap to_be_false
   end
 
-  it 'defines a key mapping with map-arguments'
+  it 'can define a key mapping with map-arguments'
     let mapinfo = Mapinfo(['n'], ['<buffer>', '<silent>'], '\c', '[abc]<CR>')
     call mapping#define(0, mapinfo)
 
-    let maparg = maparg('\c', 'n', 0, 1)
+    let maparg = Maparg('\c', 'n')
     Expect maparg.rhs    ==# '[abc]<CR>'
     Expect maparg.buffer to_be_true
     Expect maparg.silent to_be_true
   end
 
-  it 'defines key mappings in several modes'
+  it 'can define key mappings in several modes'
     let mapinfo = Mapinfo(['n', 'o', 'i'], [], '\a', 'abc')
     call mapping#define(0, mapinfo)
 
     for mode in ['n', 'o', 'i']
-      let maparg = maparg('\a', mode, 0, 1)
+      let maparg = Maparg('\a', mode)
       Expect maparg.rhs     ==# 'abc'
       Expect maparg.noremap to_be_true
     endfor
@@ -164,5 +170,65 @@ describe '#parse_args()'
       let mapinfo = ParseArgs('n <Space>q ::quit')
       Expect mapinfo == Mapinfo(['n'], [], '<Space>q', ':<C-u>quit<CR>')
     end
+  end
+end
+
+
+describe '#unmap()'
+  it 'removes the mapping of the specified lhs for the modes'
+    noremap test j
+    Expect Maparg('test', 'n').rhs ==# 'j'
+    Expect Maparg('test', 'v').rhs ==# 'j'
+    Expect Maparg('test', 'o').rhs ==# 'j'
+
+    call mapping#unmap('nvo', 'test')
+    Expect Maparg('test', 'n') ==# {}
+    Expect Maparg('test', 'v') ==# {}
+    Expect Maparg('test', 'o') ==# {}
+  end
+
+  it 'throws an exception if invalid mode chars are specified'
+    Expect expr { mapping#unmap('z', 'a') }  to_throw '^mapping:'
+    Expect expr { mapping#unmap('nz', 'a') } to_throw '^mapping:'
+  end
+end
+
+
+describe '#map_named_key()'
+  before
+    mapclear
+    unlet! g:mapping_named_key_format
+  end
+
+  it 'defines a prefix name used for other key mappings'
+    call mapping#map_named_key('ab', 'test-command')
+    Expect Maparg('ab', 'n').rhs ==# 'test-command'
+    Expect Maparg('ab', 'v') ==# {}
+    Expect Maparg('ab', 'o') ==# {}
+  end
+
+  it 'accepts mode chars as optional'
+    call mapping#map_named_key('no', 'ab', 'test-command')
+    Expect Maparg('ab', 'n').rhs ==# 'test-command'
+    Expect Maparg('ab', 'v') ==# {}
+    Expect Maparg('ab', 'o').rhs ==# 'test-command'
+
+    call mapping#map_named_key('no', 'ab')
+    Expect Maparg('no', 'n').rhs ==# 'ab'
+    Expect Maparg('no', 'o') ==# {}
+  end
+
+  it 'formats named keys as the config specified'
+    let g:mapping_named_key_format = '[%s]'
+    call mapping#map_named_key('key', 'test')
+    Expect Maparg('key', 'n').rhs ==# '[test]'
+
+    let g:mapping_named_key_format = ''
+    call mapping#map_named_key('key', 'test')
+    Expect Maparg('key', 'n').rhs ==# 'test'
+
+    unlet g:mapping_named_key_format
+    call mapping#map_named_key('key', 'test')
+    Expect Maparg('key', 'n').rhs ==# 'test'
   end
 end
