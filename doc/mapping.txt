@@ -60,7 +60,7 @@ COMMANDS						*mapping-commands*
 	{modes} is a sequence of characters. Each character indicates
 	Vim mode in which {lhs} works. The valid characters of {modes}
 	are the first chahacters of default mapping commands ('n'map,
-	'v'map, ..). 'n', 'v', 'x', 's', 'o', 'i', 'c' can be used
+	'v'map, ..). 'n', 'v', 'x', 's', 'o', 'i', 'c', 't' can be used
 	and any combination of them is allowed.
 
 	{map-arguments} is |map-arguments| of the mapping command like

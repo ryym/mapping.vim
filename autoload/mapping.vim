@@ -146,7 +146,7 @@ function! s:validate_mode_chars(modes) abort
   endif
 endfunction
 
-let s:valid_mode_chars = s:to_dict(['n', 'v', 'x', 's', 'o', 'i', 'c'])
+let s:valid_mode_chars = s:to_dict(['n', 'v', 'x', 's', 'o', 'i', 'c', 't'])
 
 " Parsing map-arguments {{{2
 

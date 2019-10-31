@@ -85,8 +85,8 @@ describe '#parse_args()'
     Expect mapinfo == Mapinfo(['n'], [], '<C-g>', 'abc')
 
     " With multiple modes.
-    let mapinfo = ParseArgs('nov gb abc')
-    Expect mapinfo == Mapinfo(['n', 'o', 'v'], [], 'gb', 'abc')
+    let mapinfo = ParseArgs('novt gb abc')
+    Expect mapinfo == Mapinfo(['n', 'o', 'v', 't'], [], 'gb', 'abc')
 
     " With unnecessary spaces.
     let mapinfo = ParseArgs('i   <C-a>  : call  Func( 1,  2, 3  ) ')
