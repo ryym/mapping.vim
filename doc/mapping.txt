@@ -1,6 +1,6 @@
 *mapping.vim*		Simplify commands for key mapping
 
-Version: 1.3.0
+Version: 1.3.1
 Author: ryym <ryym64@gmail.com>
 License: This file is placed in the public domain.
 
@@ -128,6 +128,9 @@ mapping#set_sid({sid})					*mapping#set_sid()*
 
 ==============================================================================
 CHAGNELOG						*mapping-changelog*
+
+1.3.0	2019-10-31
+	Fix syntax for terminal mode mapping.
 
 1.3.0	2019-10-31
 	Support mapping for terminal mode.

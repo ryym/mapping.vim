@@ -11,7 +11,7 @@ set cpo&vim
 
 " Return the current version.
 function! mapping#version()
-  return '1.3.0'
+  return '1.3.1'
 endfunction
 
 
